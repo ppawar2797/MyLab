@@ -42,7 +42,7 @@ pipeline{
                 type: 'war']], 
                 credentialsId: 'e93fc5ac-e369-4472-be45-c42de54b359e', 
                 groupId: "${GroupId}", 
-                nexusUrl: '172.20.10.145:8081', 
+                nexusUrl: '172.20.10.217:8081', 
                 nexusVersion: 'nexus3', 
                 protocol: 'http', 
                 repository: "${NexusRepo}", 
@@ -105,6 +105,16 @@ pipeline{
             }
         }
 
+    // Stage3 : Publish the source code to Sonarqube
+        stage ('Sonarqube Analysis'){
+            steps {
+                echo ' Source code published to Sonarqube for SCA......'
+                withSonarQubeEnv('sonarqube'){ // You can override the credential to be used
+                     sh 'mvn sonar:sonar'
+                }
+
+            }
+        }
 
 
 
